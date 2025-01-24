@@ -2,7 +2,9 @@ package stepsdefinitions;
 
 import io.cucumber.java.en.*;
 import net.serenitybdd.rest.SerenityRest;
-import static org.hamcrest.Matchers.equalTo;
+
+import static org.hamcrest.Matchers.*;
+
 public class ApiStepDefinitions {
     private String endpoint;
 
@@ -14,8 +16,8 @@ public class ApiStepDefinitions {
                 .header("x-rapidapi-host", "shazam.p.rapidapi.com")
                 .header("Content-Type", "application/json")
                 .get(endpoint);
-       // Imprimir el código de respuesta
         int actualStatusCode = SerenityRest.lastResponse().getStatusCode();
+        // Imprimir el código de respuesta
         System.out.println("Actual Response Code: " + actualStatusCode);
     }
 
@@ -29,4 +31,21 @@ public class ApiStepDefinitions {
                 .body("data.id[0]", equalTo(expectedId));
         System.out.println(SerenityRest.then().extract().body().asString());
     }
+    @Then("the field {string} should contain {string}")
+    public void the_field_should_contain(String field, String expectedValue) {
+        // Validamos que el campo contenga el valor esperado
+        SerenityRest.then()
+                .body(field, containsString(expectedValue)); // Verifica que el valor contiene la cadena esperada
+                //.body("$",hasKey(field.split("\\[")[0])) // Verifica que la raíz contiene la clave principal
+        System.out.println("Validation passed"+field+"contains"+expectedValue);
+
+    }
+    @Then("the album id in the response should be {string}")
+    public void the_album_id_in_the_response_should_be(String expectedAlbumId) {
+        // Validamos que el campo id en relationships.albums.data[0] sea igual al esperado
+        SerenityRest.then()
+                .body("data[0].relationships.albums.data[0].id", equalTo(expectedAlbumId));
+        System.out.println("Album ID validated successfully: " + expectedAlbumId);
+    }
+
 }
