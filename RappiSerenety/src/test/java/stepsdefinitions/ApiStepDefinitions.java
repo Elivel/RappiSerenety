@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.*;
 
 public class ApiStepDefinitions {
     private String endpoint;
+    private String requestBody;
 
     @Given("I send a GET request to {string}")
     public void iHaveTheEndpoint(String url) {
@@ -47,5 +48,4 @@ public class ApiStepDefinitions {
                 .body("data[0].relationships.albums.data[0].id", equalTo(expectedAlbumId));
         System.out.println("Album ID validated successfully: " + expectedAlbumId);
     }
-
 }

@@ -14,3 +14,10 @@ Background: Run api
 
   Scenario: Validate the album id in the response
     Then the album id in the response should be "1217911994"
+
+  Scenario: The service should respond with a 204 status code
+    Given I prepare the POST request for the service
+    When I send the request to the endpoint "https://shazam.p.rapidapi.com/songs/v2/detect?timezone=America%2FChicago&locale=en-US"
+    Then the response should have the status code 204
+
+
